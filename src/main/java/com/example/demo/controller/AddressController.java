@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("address/api")
 @RequiredArgsConstructor
 public class AddressController {
-    private AddressService addressService;
+    private final AddressService addressService;
 
     @PostMapping("add")
     public ResponseEntity<Object> addAddress(@RequestBody Address address) {

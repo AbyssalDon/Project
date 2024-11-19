@@ -21,8 +21,8 @@ import java.util.UUID;
 @RequestMapping("user/api")
 @RequiredArgsConstructor
 public class UserController {
-    private UserService userService;
-    private AddressService addressService;
+    private final UserService userService;
+    private final AddressService addressService;
 
     @GetMapping("/")
     public ResponseEntity<List<User>> getUserAll() {

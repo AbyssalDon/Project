@@ -3,7 +3,6 @@ package com.example.demo.service;
 import com.example.demo.dto.FullnameDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.exceptions.EmailTakenException;
-import com.example.demo.exceptions.UserAlreadyExistsException;
 import com.example.demo.exceptions.UserDoesNotExistException;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.User;
@@ -23,22 +22,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private UserMapper userMapper;
-    private UserRepository userRepository;
+    private final UserMapper userMapper;
+    private final UserRepository userRepository;
 
     // Add (C in Crud)
     @Transactional
     public ResponseEntity<Object> addUser(User user) {
-        userRepository.findByEmail(user.getEmail())
-                .orElseThrow(() -> new EmailTakenException("The email is already taken!"));
-
-        userRepository.findByFullname(user.getFirstName(), user.getMiddleName(), user.getLastName())
-                .orElseThrow(() -> new UserAlreadyExistsException("This person already exists!"));
-
-        //TODO
-        //any unique identifier
-//        userRepository.findById()
-//                        .orElseThrow();
+        if (userRepository.existsByEmail(user.getEmail()))
+            throw new EmailTakenException("The email is already taken!");
 
         userRepository.save(user);
         Map<String, Object> details = new HashMap<>();
@@ -65,11 +56,11 @@ public class UserService {
 
 
     public ResponseEntity<List<UserDTO>> getUserNoId() {
-        return ResponseEntity.ok(userRepository.findAll().stream().map(user -> userMapper.userToUserNoId(user)).collect(Collectors.toList()));
+        return ResponseEntity.ok(userRepository.findAll().stream().map(userMapper::userToUserNoId).collect(Collectors.toList()));
     }
 
     public ResponseEntity<List<FullnameDTO>> getFullName() {
-        return ResponseEntity.ok(userRepository.findAll().stream().map(user -> userMapper.userToFullname(user)).collect(Collectors.toList()));
+        return ResponseEntity.ok(userRepository.findAll().stream().map(userMapper::userToFullname).collect(Collectors.toList()));
     }
 
     // Update operation (U in CRUD)

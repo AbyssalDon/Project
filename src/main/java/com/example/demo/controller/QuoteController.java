@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("quote/api")
 @RequiredArgsConstructor
 public class QuoteController {
-    private QuoteService quoteService;
+    private final QuoteService quoteService;
 
     @GetMapping("quote")
     public ResponseEntity<List<Quote>> getQuote(@RequestBody QuoteDTO quoteDTO) {

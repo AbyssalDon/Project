@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class QuoteService {
-    private QuoteRepository quoteRepository;
+    private final QuoteRepository quoteRepository;
 
     @Value(("${api.url}"))
     private String api;

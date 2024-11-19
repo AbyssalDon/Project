@@ -23,9 +23,9 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AddressService {
-    private AddressRepository addressRepository;
-    private UserRepository userRepository;
-    private ResponseMapper responseMapper;
+    private final AddressRepository addressRepository;
+    private final UserRepository userRepository;
+    private final ResponseMapper responseMapper;
 
     //TODO no validation
     @Transactional
