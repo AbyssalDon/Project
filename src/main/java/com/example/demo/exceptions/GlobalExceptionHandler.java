@@ -14,8 +14,8 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     Map<String, Object> errorDetails = new HashMap<>();
 
-    @ExceptionHandler({PersonAlreadyExistsException.class})
-    public ResponseEntity<Object> handlePersonAlreadyExistsException(PersonAlreadyExistsException exception){
+    @ExceptionHandler({UserAlreadyExistsException.class})
+    public ResponseEntity<Object> handlePersonAlreadyExistsException(UserAlreadyExistsException exception){
         errorDetails.put("message", exception.getMessage());
         errorDetails.put("code", HttpStatus.FORBIDDEN.value());
 
@@ -24,10 +24,10 @@ public class GlobalExceptionHandler {
                 .body(errorDetails);
     }
 
-    @ExceptionHandler({PersonDoesNotExistException.class})
-    public ResponseEntity<Object> handlePersonDoesNotExistException(PersonDoesNotExistException exception){
+    @ExceptionHandler({UserDoesNotExistException.class})
+    public ResponseEntity<Object> handlePersonDoesNotExistException(UserDoesNotExistException exception){
         errorDetails.put("message", exception.getMessage());
-        errorDetails.put("code", HttpStatus.FORBIDDEN.value());
+        errorDetails.put("code", HttpStatus.NO_CONTENT.value());
 
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> handleConstraintValidationException(ConstraintViolationException exception) {
         errorDetails.put("message", "Validation failed");
-        errorDetails.put("code", HttpStatus.FORBIDDEN.value());
+        errorDetails.put("code", HttpStatus.BAD_REQUEST.value());
         errorDetails.put("details", exception.getMessage());
 
         return ResponseEntity
@@ -58,6 +58,28 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(FilterBadTypeException.class)
     public ResponseEntity<Object> handleFilterBadTypeException(FilterBadTypeException exception) {
         errorDetails.put("message", "Bad Type!");
+        errorDetails.put("code", HttpStatus.BAD_REQUEST.value());
+        errorDetails.put("details", exception.getMessage());
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorDetails);
+    }
+
+    @ExceptionHandler(AddressNotLinkedException.class)
+    public ResponseEntity<Object> handleAddressNotLinkedException(AddressNotLinkedException exception) {
+        errorDetails.put("message", "Address is not linked to any user!");
+        errorDetails.put("code", HttpStatus.BAD_REQUEST.value());
+        errorDetails.put("details", exception.getMessage());
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorDetails);
+    }
+
+    @ExceptionHandler(UserAlreadyHasAddressException.class)
+    public ResponseEntity<Object> handleUserAlreadyHasAddressException(UserAlreadyHasAddressException exception) {
+        errorDetails.put("message", "User is already linked to an address!");
         errorDetails.put("code", HttpStatus.BAD_REQUEST.value());
         errorDetails.put("details", exception.getMessage());
 

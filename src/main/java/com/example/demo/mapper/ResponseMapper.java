@@ -5,6 +5,8 @@ import com.example.demo.model.Address;
 import com.example.demo.model.User;
 import org.mapstruct.*;
 
+import java.util.Optional;
+
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface ResponseMapper {
     @Mapping(target = "firstName", source = "user.firstName")
@@ -23,8 +25,6 @@ public interface ResponseMapper {
     // TODO : Use optional of nullable
     @Named("defaultCountry")
     default String defaultCountry(String country) {
-        if (country == null)
-            country = "Bahrain";
-        return country;
+        return Optional.ofNullable(country).orElse("Bahrain");
     }
 }

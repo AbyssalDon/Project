@@ -31,3 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# API URL
+**/src/main/resources/application.yaml
+
+
+
+
+
+
