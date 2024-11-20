@@ -2,12 +2,12 @@ spring:
   application:
     name: demo
   datasource:
-    url: postgresql://localhost:5432/projectDB
+    url: jdbc:postgresql://localhost:5432/projectDB
     username: postgres
     password: db1234
   jpa:
     hibernate:
-      ddl-auto: true
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:

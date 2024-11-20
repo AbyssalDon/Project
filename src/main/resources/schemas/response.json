@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "title": "response",
+  "properties": {
+    "message": {
+      "type": "string"
+    },
+    "code": {
+      "type": "integer"
+    }
+  }
+}

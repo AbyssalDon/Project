@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "title": "user",
+  "properties": {
+    "userId": {
+      "type": "object"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "middleName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "age": {
+      "type": "integer"
+    },
+    "email": {
+      "type": "string"
+    }
+  }
+}

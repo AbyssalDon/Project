@@ -1,0 +1,27 @@
+{
+  "type": "object",
+  "title": "address",
+  "properties": {
+    "addressId": {
+      "type": "object"
+    },
+    "userId": {
+      "type": "object"
+    },
+    "building": {
+      "type": "string"
+    },
+    "road": {
+      "type": "integer"
+    },
+    "block": {
+      "type": "integer"
+    },
+    "apt": {
+      "type": "integer"
+    },
+    "country": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,249 @@
+openapi: 3.0.0
+info:
+  title: Project OpenAPI Documentation
+  description: OpenAPI documentation for the project
+  version: 0.1.0
+servers:
+  - url: /api
+    description: the main and only server url for the api
+tags:
+  - name: user
+    description: user api
+  - name: address
+    description: address api
+  - name: quote
+    description: quote api
+paths:
+  /user:
+    get:
+      tags:
+        - user
+      summary: get all users
+      description: fetches all users from the user table in the database
+      operationId: getAllUsers
+      responses:
+        '200':
+          description: users fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/response.json'
+  /user/{userId}:
+    get:
+      tags:
+        - user
+      summary: get a specific user
+      description: fetches a specific user by userId from the user table in the database
+      operationId: getUser
+      parameters:
+        - name: userId
+          in: path
+          description: id of the user
+          required: true
+          schema:
+            type: object
+      responses:
+        '200':
+          description: user fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/response.json'
+        '204':
+          description: user does not exist
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/response.json'
+  /user/delete/{userId}:
+    delete:
+      tags:
+        - user
+      summary: deletes a user
+      description: given a userId, it deleted the user with that userId from the database
+      operationId: deleteUser
+      parameters:
+        - name: userId
+          in: path
+          description: id of the user
+          required: true
+          schema:
+            type: object
+      responses:
+        '200':
+          description: user successfully deleted
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/response.json'
+        '204':
+          description: user does not exist
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/response.json'
+  /user/usernoid:
+    get:
+      tags:
+        - user
+      summary: no userId
+      description: returns all users in the user table without the userId column/field
+      operationId: getUserNoId
+      responses:
+        '200':
+          description: users with no userId fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/response.json'
+  /user/fullname:
+    get:
+      tags:
+        - user
+      summary: only fullname
+      description: returns all users with only the firstName, middleName, and lastName columns/fields
+      operationId: getUserFullname
+      responses:
+        '200':
+          description: fullnames fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/response.json'
+  /user/update:
+    put:
+      tags:
+        - user
+      summary: updates user
+      description: updates a user in the user table in the database
+      operationId: updateUser
+      requestBody:
+        description: update a user
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas/user.json'
+      responses:
+        '200':
+          description: user successfully deleted
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/response.json'
+        '204':
+          description: user does not exist
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/response.json'
+  /user/add:
+    post:
+      tags:
+        - user
+      summary: adds a user
+      description: adds a new user to the user table in the database
+      operationId: addUser
+      requestBody:
+        description: add a user
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas/user.json'
+      responses:
+        '200':
+          description: user added successfully
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/response.json'
+        '403':
+          description: user was not added
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/response.json'
+  /user/addresses:
+    get:
+      tags:
+        - user
+        - address
+      summary: returns users with their addresses
+      description: executes a query that returns all users from the user table with the addresses containing their userId as FK in the address table
+      operationId: getAddresses
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/response.json'
+  /address/add:
+    post:
+      tags:
+        - address
+      summary: adds an address
+      description: adds a new address to the address table in the database
+      operationId: addAddress
+      requestBody:
+        description: add address
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas/address.json'
+      responses:
+        '200':
+          description: address added successfully
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/response.json'
+        '400':
+          description: address not linked to a user
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/response.json'
+        '204':
+          description: user does not exist
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/response.json'
+  /address:
+    get:
+      tags:
+        - address
+      summary: returns all addresses
+      description: fetches all addresses from the database
+      operationId: getAllAddresses
+      responses:
+        '200':
+          description: addresses fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/response.json'
+  /quote:
+    get:
+      tags:
+        - quote
+      summary: returns desired quotes
+      description: returns only the quotes that adhere to certain filter criteria
+      operationId: getQuote
+      responses:
+        '200':
+          description: quotes fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/response.json'
+        '400':
+          description: not a correct filter type
+          content:
+            application/json:
+              schema:
+                $ref: 'schemas/response.json'
+
+
+
+
