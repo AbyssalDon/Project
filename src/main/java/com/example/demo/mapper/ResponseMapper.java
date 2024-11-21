@@ -4,6 +4,7 @@ import com.example.demo.dto.ResponseDTO;
 import com.example.demo.model.Address;
 import com.example.demo.model.User;
 import org.mapstruct.*;
+import org.openapitools.model.Response;
 
 import java.util.Optional;
 
@@ -20,6 +21,8 @@ public interface ResponseMapper {
     @Mapping(target = "block", source = "address.block")
     @Mapping(target = "apt", source = "address.apt")
     ResponseDTO mapToResponse(Address address, User user);
+
+    org.openapitools.model.ResponseDTO responseToResponse(ResponseDTO responseDTO);
 
 
     @Named("defaultCountry")

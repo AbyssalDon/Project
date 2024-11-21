@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/quote")
 public class QuoteController implements QuoteApi {
     private final QuoteService quoteService;
 
-    @GetMapping("")
-    public ResponseEntity<Response> getQuote(@RequestBody QuoteDTO quoteDTO) {
+    public ResponseEntity<List<org.openapitools.model.Quote>> getQuote(@RequestBody QuoteDTO quoteDTO) {
         return quoteService.getQuote(quoteDTO);
     }
 }

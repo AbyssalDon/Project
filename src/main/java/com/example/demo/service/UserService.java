@@ -1,15 +1,14 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.FullnameDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.exceptions.EmailTakenException;
 import com.example.demo.exceptions.UserDoesNotExistException;
 import com.example.demo.mapper.UserMapper;
-import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.openapitools.model.Response;
+import org.openapitools.api.UserApi;
+import org.openapitools.model.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserApi {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
 
@@ -29,7 +28,7 @@ public class UserService {
         if (userRepository.existsByEmail(user.getEmail()))
             throw new EmailTakenException("The email is already taken!");
 
-        userRepository.save(user);
+        userRepository.save(userMapper.userToUser(user));
         Response response = new Response();
         return ResponseEntity.ok(
                 response.code(HttpStatus.OK.value())
@@ -39,51 +38,29 @@ public class UserService {
     }
 
     // Read operation (R in CRUD)
-    public ResponseEntity<Response> getAllUsers() {
-        Response response = new Response();
-        return ResponseEntity.ok(
-                response.code(HttpStatus.OK.value())
-                        .message("users fetched successfully")
-                        .content(userRepository.findAll())
-        );
+    public ResponseEntity<List<org.openapitools.model.User>> getAllUsers() {
+        return ResponseEntity.ok(userRepository.findAll().stream().map(user -> userMapper.userToUser(user)).collect(Collectors.toList()));
     }
 
-    public ResponseEntity<Response> getUser(UUID userId) {
-        userRepository.findById(userId)
-                .orElseThrow(() -> new UserDoesNotExistException("This person does not exist!"));
-        Response response = new Response();
-        return ResponseEntity.ok(
-                response.code(HttpStatus.OK.value())
-                        .content(userRepository.findById(userId))
-                        .message("user fetched successfully")
-        );
+    public ResponseEntity<org.openapitools.model.User> getUser(UUID userId) {
+        return ResponseEntity.ok(userRepository.findById(userId).map(user -> userMapper.userToUser(user)).orElseThrow(() -> new UserDoesNotExistException("This person does not exist!")));
     }
 
 
-    public ResponseEntity<Response> getUserNoId() {
-        Response response = new Response();
-        return ResponseEntity.ok(
-                response.code(HttpStatus.OK.value())
-                        .content(userRepository.findAll().stream().map(userMapper::userToUserNoId).collect(Collectors.toList()))
-                        .message("users with no userId fetched successfully")
-        );
+    public ResponseEntity<List<UsernoidDTO>> getUserNoId() {
+        return ResponseEntity.ok(userRepository.findAll().stream().map(user -> userMapper.userToUserNoId(user)).map(userDTO -> userMapper.userNoIdToUserNoId(userDTO)).collect(Collectors.toList()));
     }
 
-    public ResponseEntity<Response> getFullName() {
-        Response response = new Response();
-        return ResponseEntity.ok(
-                response.code(HttpStatus.OK.value())
-                        .content(userRepository.findAll().stream().map(userMapper::userToFullname).collect(Collectors.toList()))
-                        .message("fullnames fetched successfully")
-        );
+    public ResponseEntity<List<FullnameDTO>> getFullName() {
+        return ResponseEntity.ok(userRepository.findAll().stream().map(user -> userMapper.userToFullname(user)).map(fullnameDTO -> userMapper.fullnameToFullname(fullnameDTO)).collect(Collectors.toList()));
     }
 
     // Update operation (U in CRUD)
     @Transactional
-    public ResponseEntity<Response> updateUser(User user) {
+    public ResponseEntity<Response> updateUser(org.openapitools.model.User user) {
         userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new UserDoesNotExistException("This person does not exist!"));
-        userRepository.save(user);
+        userRepository.save(userMapper.userToUser(user));
         Response response = new Response();
         return ResponseEntity.ok(
                 response.code(HttpStatus.OK.value())
@@ -94,7 +71,7 @@ public class UserService {
 
     // Delete operation (D in CRUD)
     @Transactional
-    public ResponseEntity<Response> deleteUser(User user) {
+    public ResponseEntity<Response> deleteUser(org.openapitools.model.User user) {
         userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new UserDoesNotExistException("This person does not exist!"));
         userRepository.deleteById(user.getUserId());

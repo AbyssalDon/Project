@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "title": "usernoidDTO",
+  "properties": {
+    "firstName": {
+      "type": "string"
+    },
+    "middleName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "age": {
+      "type": "integer"
+    },
+    "email": {
+      "type": "string"
+    }
+  }
+}

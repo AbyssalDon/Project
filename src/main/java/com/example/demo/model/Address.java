@@ -12,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Address {
+public class Address extends org.openapitools.model.Address {
     @Id
     @GeneratedValue(
             strategy = GenerationType.UUID

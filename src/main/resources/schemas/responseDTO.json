@@ -1,15 +1,21 @@
 {
   "type": "object",
-  "title": "address",
+  "title": "responseDTO",
   "properties": {
-    "addressId": {
-      "type": "string",
-      "format": "uuid",
-      "x-id": true
+    "firstName": {
+      "type": "string"
     },
-    "userId": {
-      "type": "string",
-      "format": "uuid"
+    "middleName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "age": {
+      "type": "integer"
+    },
+    "email": {
+      "type": "string"
     },
     "building": {
       "type": "integer"

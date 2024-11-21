@@ -27,7 +27,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'schemas/response.json'
+                type: array
+                items:
+                  $ref: 'schemas/user.json'
   /user/{userId}:
     get:
       tags:
@@ -49,7 +51,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'schemas/response.json'
+                $ref: 'schemas/user.json'
         '204':
           description: user does not exist
           content:
@@ -103,7 +105,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'schemas/response.json'
+                type: array
+                items:
+                  $ref: 'schemas/usernoidDTO.json'
   /user/fullname:
     get:
       tags:
@@ -117,7 +121,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'schemas/response.json'
+                type: array
+                items:
+                  $ref: 'schemas/fullnameDTO.json'
   /user/update:
     put:
       tags:
@@ -184,7 +190,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'schemas/response.json'
+                type: array
+                items:
+                  $ref: 'schemas/responseDTO.json'
   /address/add:
     post:
       tags:
@@ -230,7 +238,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'schemas/response.json'
+                type: array
+                items:
+                  $ref: 'schemas/address.json'
   /quote:
     get:
       tags:
@@ -243,14 +253,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'schemas/quoteDTO.json'
+              type: array
+              items:
+                $ref: 'schemas/quoteDTO.json'
       responses:
         '200':
           description: quotes fetched successfully
           content:
             application/json:
               schema:
-                $ref: 'schemas/response.json'
+                type: array
+                items:
+                  $ref: 'schemas/quote.json'
         '400':
           description: not a correct filter type
           content:

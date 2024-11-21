@@ -1,60 +1,59 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.User;
 import com.example.demo.service.AddressService;
 import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.api.UserApi;
-import org.openapitools.model.Response;
+import org.openapitools.model.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/user")
 @RequiredArgsConstructor
 public class UserController implements UserApi {
     private final UserService userService;
     private final AddressService addressService;
 
-    @GetMapping("/")
-    public ResponseEntity<Response> getUserAll() {
+    @Override
+    public ResponseEntity<List<org.openapitools.model.User>> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @GetMapping(path = "{userId}")
-    public ResponseEntity<Response> getUser(@PathVariable("userId") UUID userId) {
+    @Override
+    public ResponseEntity<org.openapitools.model.User> getUser(@PathVariable("userId") UUID userId) {
         return userService.getUser(userId);
     }
 
-    @DeleteMapping("delete")
-    public ResponseEntity<Response> deleteUser(@RequestBody User user) {
+    @Override
+    public ResponseEntity<Response> deleteUser(@RequestBody org.openapitools.model.User user) {
         return userService.deleteUser(user);
     }
 
-    @GetMapping("usernoid")
-    public ResponseEntity<Response> getUserNoId() {
+    @Override
+    public ResponseEntity<List<UsernoidDTO>> getUserNoId() {
         return userService.getUserNoId();
     }
 
-    @GetMapping("fullname")
-    public ResponseEntity<Response> getUserFullname() {
+    @Override
+    public ResponseEntity<List<FullnameDTO>> getUserFullname() {
         return userService.getFullName();
     }
 
-    @PutMapping("update")
-    public ResponseEntity<Response> updateUser(@RequestBody User user){
+    @Override
+    public ResponseEntity<Response> updateUser(@RequestBody org.openapitools.model.User user){
         return userService.updateUser(user);
     }
 
-    @PostMapping("add")
+    @Override
     public ResponseEntity<Response> addUser(@RequestBody User user) {
         return userService.addUser(user);
     }
 
-    @GetMapping("addresses")
-    public ResponseEntity<Response> getAddress() {
+    @Override
+    public ResponseEntity<List<ResponseDTO>> getUserAddresses() {
         return addressService.getUsersAddresses();
     }
 }

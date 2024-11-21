@@ -14,7 +14,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User extends org.openapitools.model.User {
     @Id
     @GeneratedValue(
             strategy = GenerationType.UUID
