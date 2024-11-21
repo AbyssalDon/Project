@@ -3,7 +3,8 @@
   "title": "user",
   "properties": {
     "userId": {
-      "type": "object"
+      "type": "string",
+      "format": "uuid"
     },
     "firstName": {
       "type": "string"

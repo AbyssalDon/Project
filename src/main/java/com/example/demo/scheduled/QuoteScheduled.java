@@ -6,7 +6,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
+@Component
 public class QuoteScheduled {
     @Autowired
     private QuoteRepository quoteRepository;
@@ -17,8 +19,6 @@ public class QuoteScheduled {
     @Value("${timer.maxrecords}")
     private int records;
 
-    //TODO : the count should be taken from database not memory
-    //TODO :  move this to sepreate class
     @Scheduled(fixedDelay = 60000)
     @Transactional
     public void saveQuote() {

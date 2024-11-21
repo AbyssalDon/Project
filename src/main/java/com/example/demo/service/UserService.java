@@ -9,15 +9,13 @@ import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.openapitools.model.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
-
-//TODO add @RequiredArgsConstructor and avoid using @Autowired for all classes
 
 @Service
 @RequiredArgsConstructor
@@ -27,68 +25,84 @@ public class UserService {
 
     // Add (C in Crud)
     @Transactional
-    public ResponseEntity<Object> addUser(User user) {
+    public ResponseEntity<Response> addUser(User user) {
         if (userRepository.existsByEmail(user.getEmail()))
             throw new EmailTakenException("The email is already taken!");
 
         userRepository.save(user);
-        Map<String, Object> details = new HashMap<>();
-        details.put("message", "User has been successfully added!");
-        details.put("code", HttpStatus.OK.value());
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(details);
+        Response response = new Response();
+        return ResponseEntity.ok(
+                response.code(HttpStatus.OK.value())
+                        .message("User has been successfully added!")
+                        .content(user)
+        );
     }
 
     // Read operation (R in CRUD)
-    //TODO user better naming scheme like getAllUsers
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userRepository.findAll());
+    public ResponseEntity<Response> getAllUsers() {
+        Response response = new Response();
+        return ResponseEntity.ok(
+                response.code(HttpStatus.OK.value())
+                        .message("users fetched successfully")
+                        .content(userRepository.findAll())
+        );
     }
 
-    //TODO: u can simply use findById.orELsethrow
-
-    public ResponseEntity<Optional<User>> getUser(UUID userId) {
+    public ResponseEntity<Response> getUser(UUID userId) {
         userRepository.findById(userId)
                 .orElseThrow(() -> new UserDoesNotExistException("This person does not exist!"));
-        return ResponseEntity.ok(userRepository.findById(userId));
+        Response response = new Response();
+        return ResponseEntity.ok(
+                response.code(HttpStatus.OK.value())
+                        .content(userRepository.findById(userId))
+                        .message("user fetched successfully")
+        );
     }
 
 
-    public ResponseEntity<List<UserDTO>> getUserNoId() {
-        return ResponseEntity.ok(userRepository.findAll().stream().map(userMapper::userToUserNoId).collect(Collectors.toList()));
+    public ResponseEntity<Response> getUserNoId() {
+        Response response = new Response();
+        return ResponseEntity.ok(
+                response.code(HttpStatus.OK.value())
+                        .content(userRepository.findAll().stream().map(userMapper::userToUserNoId).collect(Collectors.toList()))
+                        .message("users with no userId fetched successfully")
+        );
     }
 
-    public ResponseEntity<List<FullnameDTO>> getFullName() {
-        return ResponseEntity.ok(userRepository.findAll().stream().map(userMapper::userToFullname).collect(Collectors.toList()));
+    public ResponseEntity<Response> getFullName() {
+        Response response = new Response();
+        return ResponseEntity.ok(
+                response.code(HttpStatus.OK.value())
+                        .content(userRepository.findAll().stream().map(userMapper::userToFullname).collect(Collectors.toList()))
+                        .message("fullnames fetched successfully")
+        );
     }
 
     // Update operation (U in CRUD)
     @Transactional
-    public ResponseEntity<Object> updateUser(User user) {
+    public ResponseEntity<Response> updateUser(User user) {
         userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new UserDoesNotExistException("This person does not exist!"));
         userRepository.save(user);
-        Map<String, Object> details = new HashMap<>();
-        details.put("message", "User has been successfully updated!");
-        details.put("code", HttpStatus.OK.value());
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(details);
+        Response response = new Response();
+        return ResponseEntity.ok(
+                response.code(HttpStatus.OK.value())
+                        .content(user)
+                        .message("user successfully updated")
+        );
     }
 
-    //TODO use or else throw
-    // Delete operation (D in Crud)
+    // Delete operation (D in CRUD)
     @Transactional
-    public ResponseEntity<Object> deleteUser(UUID userId) {
-        userRepository.findById(userId)
+    public ResponseEntity<Response> deleteUser(User user) {
+        userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new UserDoesNotExistException("This person does not exist!"));
-        userRepository.deleteById(userId);
-        Map<String, Object> details = new HashMap<>();
-        details.put("message", "User has been successfully deleted!");
-        details.put("code", HttpStatus.OK.value());
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(details);
+        userRepository.deleteById(user.getUserId());
+        Response response = new Response();
+        return ResponseEntity.ok(
+                response.code(HttpStatus.OK.value())
+                        .content(user)
+                        .message("user successfully deleted")
+        );
     }
 }

@@ -22,7 +22,6 @@ public interface ResponseMapper {
     ResponseDTO mapToResponse(Address address, User user);
 
 
-    // TODO : Use optional of nullable
     @Named("defaultCountry")
     default String defaultCountry(String country) {
         return Optional.ofNullable(country).orElse("Bahrain");

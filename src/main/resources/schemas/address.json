@@ -3,10 +3,13 @@
   "title": "address",
   "properties": {
     "addressId": {
-      "type": "object"
+      "type": "string",
+      "format": "uuid",
+      "x-id": true
     },
     "userId": {
-      "type": "object"
+      "type": "string",
+      "format": "uuid"
     },
     "building": {
       "type": "string"

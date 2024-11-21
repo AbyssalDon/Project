@@ -10,6 +10,8 @@ import com.example.demo.repository.AddressRepository;
 import com.example.demo.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.openapitools.api.AddressApi;
+import org.openapitools.model.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,14 +24,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AddressService {
+public class AddressService implements AddressApi {
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
     private final ResponseMapper responseMapper;
 
-    //TODO no validation
     @Transactional
-    public ResponseEntity<Object> addAddress(Address address) {
+    public ResponseEntity<Response> addAddress(Address address) {
         Optional.ofNullable(address.getUserId())
                 .orElseThrow(() -> new AddressNotLinkedException("An address must be linked to an existing user."));
         userRepository.findById(address.getUserId())
@@ -38,21 +39,32 @@ public class AddressService {
             throw new UserAlreadyHasAddressException("Cannot link an address to a user that is already linked to another address.");
 
         addressRepository.save(address);
-        Map<String, Object> details = new HashMap<>();
-        details.put("message", "Address has been successfully added!");
-        details.put("code", HttpStatus.OK.value());
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(details);
+        Response response = new Response();
+        return ResponseEntity.ok(
+                response.code(HttpStatus.OK.value())
+                        .content(address)
+                        .message("address added successfully")
+        );
     }
 
-    public ResponseEntity<List<Address>> getAddresses() {
-        return ResponseEntity.ok(addressRepository.findAll());
+    public ResponseEntity<Response> getAllAddresses() {
+        Response response = new Response();
+        return ResponseEntity.ok(
+                response.code(HttpStatus.OK.value())
+                        .content(addressRepository.findAll())
+                        .message("addresses fetched successfully")
+        );
     }
 
-    public ResponseEntity<List<ResponseDTO>> getUsersAddresses() {
-        return ResponseEntity.ok(userRepository.findAll().stream()
-                .map(user -> responseMapper.mapToResponse(addressRepository.findByUserId(user.getUserId()), user))
-                .collect(Collectors.toList()));
+    public ResponseEntity<Response> getUsersAddresses() {
+        Response response = new Response();
+        return ResponseEntity.ok(
+                response.code(HttpStatus.OK.value())
+                        .content(userRepository.findAll().stream()
+                                .map(user -> responseMapper.mapToResponse(addressRepository.findByUserId(user.getUserId()), user))
+                                .collect(Collectors.toList()))
+                        .message("success")
+        );
+
     }
 }

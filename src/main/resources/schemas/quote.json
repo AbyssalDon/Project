@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "title": "quote",
+  "properties": {
+    "_id": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "authorSlug": {
+      "type": "string"
+    },
+    "length": {
+      "type": "integer"
+    },
+    "dateAdded": {
+      "type": "string",
+      "format": "date"
+    },
+    "dateModified": {
+      "type": "string",
+      "format": "date"
+    }
+  }
+}
