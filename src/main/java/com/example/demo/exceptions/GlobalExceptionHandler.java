@@ -18,6 +18,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handlePersonAlreadyExistsException(UserAlreadyExistsException exception){
         errorDetails.put("message", exception.getMessage());
         errorDetails.put("code", HttpStatus.FORBIDDEN.value());
+        errorDetails.put("details", "");
 
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
@@ -25,9 +26,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({UserDoesNotExistException.class})
-    public ResponseEntity<Object> handlePersonDoesNotExistException(UserDoesNotExistException exception){
+    public ResponseEntity<Object> handleUserDoesNotExistException(UserDoesNotExistException exception){
         errorDetails.put("message", exception.getMessage());
         errorDetails.put("code", HttpStatus.NO_CONTENT.value());
+        errorDetails.put("details", "");
 
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
@@ -38,6 +40,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleEmailTakenException(EmailTakenException exception) {
         errorDetails.put("message", exception.getMessage());
         errorDetails.put("code", HttpStatus.FORBIDDEN.value());
+        errorDetails.put("details", "");
 
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)

@@ -16,6 +16,6 @@ spring:
 timer:
   maxrecords: 10
 api:
-  url: ${http://api.quotable.io/random}
+  url: http://api.quotable.io/random
 server:
   port: 9000

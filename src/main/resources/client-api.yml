@@ -41,7 +41,8 @@ paths:
           description: id of the user
           required: true
           schema:
-            type: object
+            type: string
+            format: uuid
       responses:
         '200':
           description: user fetched successfully
@@ -55,20 +56,27 @@ paths:
             application/json:
               schema:
                 $ref: 'schemas/response.json'
-  /user/delete/{userId}:
+  /user/delete:
     delete:
       tags:
         - user
       summary: deletes a user
       description: given a userId, it deleted the user with that userId from the database
       operationId: deleteUser
-      parameters:
-        - name: userId
-          in: path
-          description: id of the user
-          required: true
-          schema:
-            type: object
+#      parameters:
+#        - name: userId
+#          in: path
+#          description: id of the user
+#          required: true
+#          schema:
+#            type: string
+#            format: uuid
+      requestBody:
+        description: remove user
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas/user.json'
       responses:
         '200':
           description: user successfully deleted
@@ -125,7 +133,7 @@ paths:
               $ref: 'schemas/user.json'
       responses:
         '200':
-          description: user successfully deleted
+          description: user successfully updated
           content:
             application/json:
               schema:
@@ -169,7 +177,7 @@ paths:
         - address
       summary: returns users with their addresses
       description: executes a query that returns all users from the user table with the addresses containing their userId as FK in the address table
-      operationId: getAddresses
+      operationId: getUserAddresses
       responses:
         '200':
           description: success
@@ -230,6 +238,12 @@ paths:
       summary: returns desired quotes
       description: returns only the quotes that adhere to certain filter criteria
       operationId: getQuote
+      requestBody:
+        description: get quoteDTO
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas/quoteDTO.json'
       responses:
         '200':
           description: quotes fetched successfully

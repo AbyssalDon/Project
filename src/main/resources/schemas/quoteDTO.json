@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "title": "quoteDTO",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string"
+    },
+    "values": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
